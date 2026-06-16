@@ -1,0 +1,105 @@
+{
+  "features": [
+    {
+      "id": 1,
+      "name": "theme_and_globals",
+      "title": "Tema y estilos globales de la marca",
+      "description": "Define la paleta cromática y la tipografía base de Mantamar: café muy claro como color principal, negro para textos y detalles, blanco para textos sobre detalles negros, y variantes de café para acentos. Es el cimiento visual del sitio y debe transmitir una estética atrevida, moderna, clásica y rural, simple pero no minimalista.",
+      "acceptance": [
+        "src/app/globals.css importa Tailwind v4 con @import 'tailwindcss' y declara en un bloque @theme {} los tokens --color-cream (#F5EDE0), --color-cream-dark (#E8D9C0), --color-coffee (#C9A875), --color-coffee-dark (#8B6F47), --color-ink (#0F0F0F) y --color-paper (#FFFFFF).",
+        "src/app/layout.tsx exporta metadata con title 'Mantamar' y description en español sobre la tienda de lana chilena, y renderiza <html lang='es'>.",
+        "src/app/page.tsx renderiza un <main> con clases bg-cream y text-ink y un <h1> con el texto 'Mantamar' (placeholder que las features siguientes irán reemplazando).",
+        "Existe tests/theme.test.tsx con al menos un test que verifica que la home renderiza <html lang='es'>, que el <title> del documento es 'Mantamar' y que el <h1> contiene 'Mantamar'."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 2,
+      "name": "header_navigation",
+      "title": "Cabecera con navegación principal",
+      "description": "Barra superior fija con la marca 'Mantamar' a la izquierda y los enlaces a Inicio, Catálogo, Nosotros y Contacto a la derecha. Establece la navegación global del sitio y se mantiene visible en todas las páginas.",
+      "acceptance": [
+        "Existe src/components/Header.tsx que exporta un componente Header y se monta desde src/app/layout.tsx (no desde cada página).",
+        "El header muestra la marca 'Mantamar' como enlace a '/' y los enlaces de navegación con hrefs '#inicio', '#catalogo', '#nosotros' y '#contacto'.",
+        "El header tiene fondo bg-cream/90 con backdrop-blur y un borde inferior border-b border-coffee-dark/20 para separar visualmente del contenido.",
+        "Existe tests/components/Header.test.tsx con al menos un test que verifica que el header se renderiza en '/' con el texto 'Mantamar' y los cuatro enlaces visibles."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 3,
+      "name": "hero_section",
+      "title": "Sección hero de la página principal",
+      "description": "Banner horizontal a página completa con la imagen de fondo hero_placeholder.webp, un titular grande, un subtítulo descriptivo y un CTA hacia el catálogo. Comunica la identidad de la marca en el primer vistazo y marca el tono atrevido pero clásico del sitio.",
+      "acceptance": [
+        "Existe public/hero_placeholder.webp (placeholder: si no está colocado, los tests de esta feature fallarán hasta que se coloque).",
+        "Existe src/components/Hero.tsx que exporta Hero y se monta dentro de src/app/page.tsx con id='inicio'.",
+        "La sección ocupa al menos el 80% del alto de la ventana (clase min-h-[80vh] o similar) y muestra un <img> (o next/image) con src='/hero_placeholder.webp' y alt en español.",
+        "La sección contiene un <h1> con un titular en español sobre lana chilena o ponchos, un <p> subtítulo y un <a> con texto 'Ver catálogo' que enlaza a '#catalogo'.",
+        "Existe tests/components/Hero.test.tsx que verifica que la sección con id='inicio' está en '/', que el <img> apunta a '/hero_placeholder.webp', que el <h1> está presente y que el CTA apunta a '#catalogo'."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 4,
+      "name": "brand_story",
+      "title": "Sección de historia de la marca",
+      "description": "Bloque 'Nosotros' que cuenta la propuesta rural, clásica y elegante de Mantamar: lana chilena, ponchos tejidos a mano, oficio artesano. Refuerza la identidad del sitio y diferencia la marca de la moda masiva.",
+      "acceptance": [
+        "Existe src/components/BrandStory.tsx que exporta BrandStory y se monta en src/app/page.tsx con id='nosotros'.",
+        "La sección incluye al menos un <h2> con un título en español (por ejemplo 'Nuestra historia') y un <p> que mencione explícitamente las palabras 'lana chilena' y 'poncho'.",
+        "El layout es de dos columnas en escritorio (texto a un lado, <img> con src='/product_placeholder_2.svg' al otro) y colapsa a una sola columna por debajo del breakpoint md.",
+        "Existe tests/components/BrandStory.test.tsx que verifica que la sección con id='nosotros' aparece en '/', que el texto contiene las palabras 'lana chilena' y 'poncho' y que la imagen apunta a '/product_placeholder_2.svg'."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 5,
+      "name": "product_grid",
+      "title": "Catálogo de productos en cuadrícula",
+      "description": "Listado de productos en una cuadrícula responsive. Cada tarjeta muestra la imagen placeholder, el nombre y el precio. Por ahora los productos son ficticios y viven en un array estático que la página de detalle reutiliza.",
+      "acceptance": [
+        "Existe public/product_placeholder_2.svg (placeholder: si no está colocado, los tests de esta feature fallarán hasta que se coloque).",
+        "Existe src/lib/products.ts que exporta un array products con al menos 6 elementos, cada uno con slug (string único), name (string en español), price (número entero en CLP) y description (string en español).",
+        "Existen src/components/ProductGrid.tsx y src/components/ProductCard.tsx. La grid se monta en src/app/page.tsx con id='catalogo'. Cada ProductCard es un enlace a /productos/<slug> y renderiza un <img> con src='/product_placeholder_2.svg', alt con el nombre del producto, el nombre como <h3> y el precio formateado en CLP (por ejemplo '$45.000').",
+        "La grid es responsive: 1 columna en móvil, 2 en breakpoint sm, 3 en md y superiores.",
+        "Existe tests/components/ProductGrid.test.tsx que verifica que la grid renderiza al menos 6 tarjetas, que cada tarjeta es un enlace a /productos/<slug> y que el precio contiene el símbolo '$'."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 6,
+      "name": "product_detail_page",
+      "title": "Página de detalle de producto",
+      "description": "Ruta dinámica /productos/[slug] que muestra la ficha completa de un producto: imagen grande, nombre, descripción, precio y un CTA de contacto. Reutiliza los datos del array estático y maneja correctamente el caso de slug inexistente.",
+      "acceptance": [
+        "Existe src/app/productos/[slug]/page.tsx que resuelve el producto desde src/lib/products.ts por params.slug y muestra su ficha.",
+        "Si el slug no existe en products, la página renderiza un <h1> 'Producto no encontrado' en español y un enlace de vuelta a '#catalogo' (no un error 500).",
+        "La ficha válida incluye un <img> con src='/product_placeholder_2.svg', un <h1> con el nombre del producto, un <p> con la descripción, el precio formateado en CLP y un <a> con texto 'Consultar por WhatsApp' apuntando a https://wa.me/?text=<mensaje con el slug> (placeholder del número, el href puede ser un literal).",
+        "Existe tests/app/product-detail.test.tsx con al menos dos tests: uno que verifica la renderización correcta para un slug válido y otro que verifica el estado 'Producto no encontrado' para un slug inválido."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 7,
+      "name": "footer",
+      "title": "Pie de página del sitio",
+      "description": "Pie de página con la marca, datos de contacto, iconos de redes sociales y copyright con año dinámico. Cierra la identidad visual del sitio y centraliza la información de contacto.",
+      "acceptance": [
+        "Existe src/components/Footer.tsx que exporta Footer y se monta en src/app/layout.tsx (no en cada página).",
+        "El footer muestra la marca 'Mantamar', un bloque de contacto con email y teléfono de placeholder, y enlaces a tres redes sociales (Instagram, Facebook y WhatsApp) con href='#' por ahora.",
+        "El footer tiene fondo bg-ink text-paper y padding py-12 px-6 como mínimo.",
+        "El texto de copyright contiene el año actual calculado dinámicamente dentro del componente (no hardcodeado).",
+        "Existe tests/components/Footer.test.tsx que verifica que el footer aparece en '/', que contiene el texto 'Mantamar', que el copyright contiene el año actual y que los tres enlaces a redes (Instagram, Facebook y WhatsApp) están presentes."
+      ],
+      "sdd": true,
+      "status": "done"
+    }
+  ]
+}
