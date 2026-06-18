@@ -32,7 +32,7 @@ function ProductDetailView({ product }: { product: Product }) {
       <section className="mx-auto grid max-w-5xl grid-cols-1 items-start gap-12 px-6 py-16 md:grid-cols-2">
         <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-cream-dark">
           <img
-            src="/product_placeholder_2.svg"
+            src="/product-placeholder-2.svg"
             alt={product.name}
             className="h-full w-full object-cover"
           />

@@ -11,13 +11,13 @@ describe('hero_section', () => {
     expect(section).not.toBeNull();
   });
 
-  test('hero section has image with /hero_placeholder.webp and Spanish alt', () => {
+  test('hero section has image with /poncho-hero.webp and Spanish alt', () => {
     const { container } = render(<Hero />);
     const section = container.querySelector('section#inicio');
     expect(section).not.toBeNull();
     const img = section?.querySelector('img');
     expect(img).not.toBeNull();
-    expect(img?.getAttribute('src')).toBe('/hero_placeholder.webp');
+    expect(img?.getAttribute('src')).toContain('poncho-hero.webp');
     const alt = (img?.getAttribute('alt') ?? '').trim();
     expect(alt.length).toBeGreaterThan(0);
     expect(alt).toMatch(/[a-záéíóúñ]/i);

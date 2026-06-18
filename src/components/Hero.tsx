@@ -1,13 +1,17 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section
       id="inicio"
       className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-coffee-dark/30"
     >
-      <img
-        src="/hero_placeholder.webp"
-        alt="Poncho de lana chilena sobre fondo rural"
-        className="absolute inset-0 h-full w-full object-cover"
+      <Image
+        src="/poncho-hero.webp"
+        alt="Poncho Hero"
+        fill
+        priority
+        className="object-cover object-top"
       />
       <div className="absolute inset-0 bg-ink/40" />
       <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 text-center text-paper">

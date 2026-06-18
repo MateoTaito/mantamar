@@ -10,7 +10,7 @@ describe('product_detail_page (component)', () => {
     expect(h1).toBeInTheDocument();
     expect(screen.getByText(product.description)).toBeInTheDocument();
     const img = screen.getByRole('img');
-    expect(img.getAttribute('src')).toBe('/product_placeholder_2.svg');
+    expect(img.getAttribute('src')).toBe('/product-placeholder-2.svg');
     expect(screen.getByText(/\$/)).toBeInTheDocument();
     const cta = screen.getByRole('link', { name: /consultar por whatsapp/i });
     expect(cta).toBeInTheDocument();

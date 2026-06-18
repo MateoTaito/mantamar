@@ -24,12 +24,12 @@ describe('brand_story', () => {
     expect(text).toContain('poncho');
   });
 
-  test('section has image pointing to /product_placeholder_2.svg', () => {
+  test('section has image pointing to a poncho image', () => {
     const { container } = render(<BrandStory />);
     const section = container.querySelector('section#nosotros');
     const img = section?.querySelector('img');
     expect(img).not.toBeNull();
-    expect(img?.getAttribute('src')).toBe('/product_placeholder_2.svg');
+    expect(img?.getAttribute('src')).toContain('poncho-mujer.webp');
   });
 
   test('section has md:grid-cols-2 for two-column desktop layout', () => {

@@ -47,7 +47,8 @@ describe('product_grid', () => {
     for (const card of cards) {
       const img = card.querySelector('img');
       expect(img).not.toBeNull();
-      expect(img?.getAttribute('src')).toBe('/product_placeholder_2.svg');
+      const src = img?.getAttribute('src') ?? '';
+      expect(src).toMatch(/poncho-(mujer|hombre)\.webp/);
       const alt = img?.getAttribute('alt') ?? '';
       expect(alt.length).toBeGreaterThan(0);
       const h3 = card.querySelector('h3');

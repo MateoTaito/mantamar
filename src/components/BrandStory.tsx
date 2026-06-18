@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function BrandStory() {
   return (
     <section
@@ -10,22 +12,23 @@ export default function BrandStory() {
         </h2>
         <p className="text-lg leading-relaxed text-ink/80">
           Mantamar nace del encuentro entre el campo chileno y el oficio
-          artesano. Tejemos ponchos de lana chilena con técnicas heredadas,
-          en pequeños talleres del sur, donde cada pieza lleva el tiempo
-          y las manos de quien la hace.
+          artesano. Tejemos ponchos de lana chilena con técnicas heredadas, en
+          pequeños talleres del sur, donde cada pieza lleva el tiempo y las
+          manos de quien la hace.
         </p>
         <p className="text-lg leading-relaxed text-ink/80">
-          Creemos en una moda lenta, en los materiales nobles y en el
-          valor de lo hecho a mano. Por eso cada poncho que sale de
-          Mantamar es único: una prenda para usar muchos años, no una
-          temporada.
+          Creemos en una moda lenta, en los materiales nobles y en el valor de
+          lo hecho a mano. Por eso cada poncho que sale de Mantamar es único:
+          una prenda para usar muchos años, no una temporada.
         </p>
       </div>
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-cream-dark">
-        <img
-          src="/product_placeholder_2.svg"
-          alt="Artesana tejiendo un poncho de lana chilena en su taller"
-          className="h-full w-full object-cover"
+        <Image
+          src="/poncho-mujer.webp"
+          alt="poncho mujer"
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
         />
       </div>
     </section>

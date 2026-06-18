@@ -1,19 +1,23 @@
-import { products, formatPrice, type Product } from '@/lib/products';
+import { products, formatPrice, type Product } from "@/lib/products";
+
+import Image from "next/image";
 
 export { products, formatPrice, type Product };
 
+const productImages = ["/poncho-mujer.webp", "/poncho-hombre.webp"];
+
 export function ProductCard({ product }: { product: Product }) {
+  const imgSrc =
+    productImages[
+      product.slug.charCodeAt(product.slug.length - 1) % productImages.length
+    ];
   return (
     <a
       href={`/productos/${product.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-coffee-dark/10 bg-paper text-ink transition-shadow hover:shadow-lg"
     >
-      <div className="aspect-[4/5] w-full overflow-hidden bg-cream-dark">
-        <img
-          src="/product_placeholder_2.svg"
-          alt={product.name}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-        />
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-cream-dark">
+        <Image src={imgSrc} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" className="object-cover" />
       </div>
       <div className="flex flex-1 flex-col gap-2 p-5">
         <h3 className="text-lg font-semibold leading-snug">{product.name}</h3>
@@ -27,10 +31,7 @@ export function ProductCard({ product }: { product: Product }) {
 
 export default function ProductGrid() {
   return (
-    <section
-      id="catalogo"
-      className="mx-auto max-w-6xl px-6 py-20"
-    >
+    <section id="catalogo" className="mx-auto max-w-6xl px-6 py-20">
       <div className="mb-10 flex flex-col gap-3 text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Nuestro catálogo
