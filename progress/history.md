@@ -97,3 +97,7 @@ auto-aprobación con `[auto-approved]` en las bitácoras).
 - `npx jest` → 35/35 verde
 - Mutación agregada sobre 10 archivos productivos: 57/57 = 100%
 
+
+## [auto-approved] F1 theme_and_globals — DONE
+tdd: green (11/11 @s) · judge: APPROVED · mutation: ADAPTADO (83% TS, 1 sobreviviente spec-level, CSS fuera de scope JS).
+Archivos: globals.css (12 tokens + grain + selection + keyframes + reduced-motion), layout.tsx (Geist+Geist_Mono+Fraunces cableadas), public/grain.svg, page.tsx (main bg-charcoal text-sand), tests/theme.test.tsx.

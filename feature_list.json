@@ -3,13 +3,15 @@
     {
       "id": 1,
       "name": "theme_and_globals",
-      "title": "Tema y estilos globales de la marca",
-      "description": "Define la paleta cromática y la tipografía base de Mantamar: café muy claro como color principal, negro para textos y detalles, blanco para textos sobre detalles negros, y variantes de café para acentos. Es el cimiento visual del sitio y debe transmitir una estética atrevida, moderna, clásica y rural, simple pero no minimalista.",
+      "title": "Tema y estilos globales v2 — rediseño obscuro editorial",
+      "description": "Reestablece el cimiento visual de Mantamar como una casa de oficio premium, editorial y obscura. Conserva los 6 tokens originales (cream/cream-dark/coffee/coffee-dark/ink/paper) y los extiende con tonos profundos (charcoal, espresso, stone, sand, copper, rust). El canvas base pasa de crema a tinta cálida (charcoal); el crema se reserva para bloques de contraste editorial. Cablea las fuentes Geist Sans, Geist Mono y Fraunces vía next/font/google (corrige el bug silencioso actual). Añade textura de fibra (grain overlay), selección de texto custom y respeta prefers-reduced-motion.",
       "acceptance": [
-        "src/app/globals.css importa Tailwind v4 con @import 'tailwindcss' y declara en un bloque @theme {} los tokens --color-cream (#F5EDE0), --color-cream-dark (#E8D9C0), --color-coffee (#C9A875), --color-coffee-dark (#8B6F47), --color-ink (#0F0F0F) y --color-paper (#FFFFFF).",
-        "src/app/layout.tsx exporta metadata con title 'Mantamar' y description en español sobre la tienda de lana chilena, y renderiza <html lang='es'>.",
-        "src/app/page.tsx renderiza un <main> con clases bg-cream y text-ink y un <h1> con el texto 'Mantamar' (placeholder que las features siguientes irán reemplazando).",
-        "Existe tests/theme.test.tsx con al menos un test que verifica que la home renderiza <html lang='es'>, que el <title> del documento es 'Mantamar' y que el <h1> contiene 'Mantamar'."
+        "src/app/globals.css importa Tailwind v4 con @import 'tailwindcss' y declara en un bloque @theme {} los 6 tokens originales (--color-cream #F5EDE0, --color-cream-dark #E8D9C0, --color-coffee #C9A875, --color-coffee-dark #8B6F47, --color-ink #0F0F0F, --color-paper #FFFFFF) MÁS los tokens nuevos --color-charcoal (#1A1714), --color-espresso (#2A1E14), --color-stone (#A89A85), --color-sand (#D9C7A8), --color-copper (#B07A4A) y --color-rust (#8C4A2E).",
+        "src/app/layout.tsx cablea Geist Sans, Geist Mono y Fraunces desde next/font/google exponiendo las CSS vars --font-geist-sans, --font-geist-mono y --font-serif, y los aplica al <body>. Exporta metadata con title 'Mantamar' y description en español sobre lana chilena, y renderiza <html lang='es'>.",
+        "El <body> usa fondo charcoal y texto sand (bg-charcoal text-sand) como canvas obscuro base; existe un overlay de textura grain sutil aplicado globalmente.",
+        "Existe public/grain.svg con la textura de fibra referenciada desde el CSS.",
+        "globals.css declara al menos una @keyframes base y una regla @media (prefers-reduced-motion: reduce) que desactiva animaciones.",
+        "Existe tests/theme.test.tsx que verifica: html lang='es', metadata.title 'Mantamar', el bloque @theme con los 12 tokens (6 originales + 6 nuevos), el cableado de next/font/google en layout.tsx, y el body con clases bg-charcoal text-sand."
       ],
       "sdd": true,
       "status": "done"
@@ -17,13 +19,14 @@
     {
       "id": 2,
       "name": "header_navigation",
-      "title": "Cabecera con navegación principal",
-      "description": "Barra superior fija con la marca 'Mantamar' a la izquierda y los enlaces a Inicio, Catálogo, Nosotros y Contacto a la derecha. Establece la navegación global del sitio y se mantiene visible en todas las páginas.",
+      "title": "Cabecera con navegación principal v2 — scroll-linked",
+      "description": "Header sticky con comportamiento scroll-linked (shrink + opacidad creciente al hacer scroll), wordmark en Fraunces, nav con underline animada en hover. Mantiene marca a la izquierda enlazando a '/' y los enlaces Inicio/Catálogo/Nosotros/Contacto a la derecha. Se monta desde layout.tsx.",
       "acceptance": [
-        "Existe src/components/Header.tsx que exporta un componente Header y se monta desde src/app/layout.tsx (no desde cada página).",
+        "src/components/Header.tsx exporta Header y se monta desde src/app/layout.tsx.",
         "El header muestra la marca 'Mantamar' como enlace a '/' y los enlaces de navegación con hrefs '#inicio', '#catalogo', '#nosotros' y '#contacto'.",
-        "El header tiene fondo bg-cream/90 con backdrop-blur y un borde inferior border-b border-coffee-dark/20 para separar visualmente del contenido.",
-        "Existe tests/components/Header.test.tsx con al menos un test que verifica que el header se renderiza en '/' con el texto 'Mantamar' y los cuatro enlaces visibles."
+        "El header es sticky (sticky top-0) y usa un cliente component con motion para el comportamiento scroll-linked (cambio de altura/opacidad al hacer scroll), respetando prefers-reduced-motion.",
+        "El wordmark usa la fuente serif (Fraunces) y los enlaces de nav tienen una underline animada en hover.",
+        "Existe tests/components/Header.test.tsx que verifica que el header se renderiza con el texto 'Mantamar', los cuatro enlaces visibles, que es sticky, y que el componente es un cliente component ('use client') o importa motion."
       ],
       "sdd": true,
       "status": "done"
@@ -31,57 +34,60 @@
     {
       "id": 3,
       "name": "hero_section",
-      "title": "Sección hero de la página principal",
-      "description": "Banner horizontal a página completa con la imagen de fondo hero_placeholder.webp, un titular grande, un subtítulo descriptivo y un CTA hacia el catálogo. Comunica la identidad de la marca en el primer vistazo y marca el tono atrevido pero clásico del sitio.",
+      "title": "Sección hero v2 — cinematic reveal + parallax",
+      "description": "Hero a página completa con reveal cinematográfico: imagen con clip-path cortina, h1 palabra-por-palabra con spring stagger, parallax al scroll (imagen sube más lento que el texto) y Ken Burns lento. Mantiene imagen /poncho-hero.webp, h1 en español sobre lana/ponchos, subtítulo y CTA 'Ver catálogo' a #catalogo.",
       "acceptance": [
-        "Existe public/hero_placeholder.webp (placeholder: si no está colocado, los tests de esta feature fallarán hasta que se coloque).",
-        "Existe src/components/Hero.tsx que exporta Hero y se monta dentro de src/app/page.tsx con id='inicio'.",
-        "La sección ocupa al menos el 80% del alto de la ventana (clase min-h-[80vh] o similar) y muestra un <img> (o next/image) con src='/hero_placeholder.webp' y alt en español.",
+        "src/components/Hero.tsx exporta Hero y se monta dentro de src/app/page.tsx con id='inicio'.",
+        "La sección ocupa al menos el 80% del alto de la ventana (min-h-[80vh] o equivalente) y muestra una imagen con src '/poncho-hero.webp' y alt en español.",
         "La sección contiene un <h1> con un titular en español sobre lana chilena o ponchos, un <p> subtítulo y un <a> con texto 'Ver catálogo' que enlaza a '#catalogo'.",
-        "Existe tests/components/Hero.test.tsx que verifica que la sección con id='inicio' está en '/', que el <img> apunta a '/hero_placeholder.webp', que el <h1> está presente y que el CTA apunta a '#catalogo'."
+        "El componente es un cliente component que usa motion para: reveal de imagen con clip-path, stagger palabra-por-palabra del h1, y parallax al scroll; respeta prefers-reduced-motion (estado final estático sin motion).",
+        "Existe tests/components/Hero.test.tsx que verifica: sección id='inicio' en '/', imagen apunta a '/poncho-hero.webp', h1 presenta, CTA a '#catalogo', min-h-[80vh] o similar, y que el componente usa motion ('use client' o import de motion)."
       ],
       "sdd": true,
       "status": "done"
     },
     {
       "id": 4,
-      "name": "brand_story",
-      "title": "Sección de historia de la marca",
-      "description": "Bloque 'Nosotros' que cuenta la propuesta rural, clásica y elegante de Mantamar: lana chilena, ponchos tejidos a mano, oficio artesano. Refuerza la identidad del sitio y diferencia la marca de la moda masiva.",
+      "name": "materials_marquee",
+      "title": "Marquee de materiales — ticker infinito",
+      "description": "Nueva sección entre Hero y BrandStory: ticker infinito horizontal con dos filas en direcciones opuestas mostrando los materiales nobles y atributos del oficio (LANA DE OVEJA · TEÑIDO NATURAL · LANA MERINO · LANA GRUESA · HECHO A MANO · SUR DE CHILE). Frena al hover. Refuerza la narrativa de materiales reales y oficio artesanal.",
       "acceptance": [
-        "Existe src/components/BrandStory.tsx que exporta BrandStory y se monta en src/app/page.tsx con id='nosotros'.",
-        "La sección incluye al menos un <h2> con un título en español (por ejemplo 'Nuestra historia') y un <p> que mencione explícitamente las palabras 'lana chilena' y 'poncho'.",
-        "El layout es de dos columnas en escritorio (texto a un lado, <img> con src='/product_placeholder_2.svg' al otro) y colapsa a una sola columna por debajo del breakpoint md.",
-        "Existe tests/components/BrandStory.test.tsx que verifica que la sección con id='nosotros' aparece en '/', que el texto contiene las palabras 'lana chilena' y 'poncho' y que la imagen apunta a '/product_placeholder_2.svg'."
+        "Existe src/components/MaterialsMarquee.tsx que exporta MaterialsMarquee y se monta en src/app/page.tsx entre Hero y BrandStory.",
+        "El componente renderiza al menos dos filas de texto en movimiento (marquee) con direcciones opuestas, cada fila repitiendo la lista de materiales al menos una vez.",
+        "El marquee es un cliente component que usa motion o CSS animation para el movimiento infinito, frena al hover (pause on hover), y respeta prefers-reduced-motion (estático sin movimiento).",
+        "El texto del marquee menciona al menos 'lana' y 'hecho a mano' (o equivalentes del oficio artesanal).",
+        "Existe tests/components/MaterialsMarquee.test.tsx que verifica: el componente se monta en la home, renderiza texto que contiene 'lana' y 'mano', tiene dos filas (marquee), y es un cliente component / usa motion."
       ],
       "sdd": true,
       "status": "done"
     },
     {
       "id": 5,
-      "name": "product_grid",
-      "title": "Catálogo de productos en cuadrícula",
-      "description": "Listado de productos en una cuadrícula responsive. Cada tarjeta muestra la imagen placeholder, el nombre y el precio. Por ahora los productos son ficticios y viven en un array estático que la página de detalle reutiliza.",
+      "name": "brand_story",
+      "title": "Sección de historia v2 — editorial asimétrico + sello",
+      "description": "Bloque 'Nosotros' con layout editorial asimétrico, reveal de imagen con máscara-from-below, parallax, sello SVG 'Hecho a mano' que rota ligado al scroll, y texto staggered. Mantiene mención explícita de 'lana chilena' y 'poncho'.",
       "acceptance": [
-        "Existe public/product_placeholder_2.svg (placeholder: si no está colocado, los tests de esta feature fallarán hasta que se coloque).",
-        "Existe src/lib/products.ts que exporta un array products con al menos 6 elementos, cada uno con slug (string único), name (string en español), price (número entero en CLP) y description (string en español).",
-        "Existen src/components/ProductGrid.tsx y src/components/ProductCard.tsx. La grid se monta en src/app/page.tsx con id='catalogo'. Cada ProductCard es un enlace a /productos/<slug> y renderiza un <img> con src='/product_placeholder_2.svg', alt con el nombre del producto, el nombre como <h3> y el precio formateado en CLP (por ejemplo '$45.000').",
-        "La grid es responsive: 1 columna en móvil, 2 en breakpoint sm, 3 en md y superiores.",
-        "Existe tests/components/ProductGrid.test.tsx que verifica que la grid renderiza al menos 6 tarjetas, que cada tarjeta es un enlace a /productos/<slug> y que el precio contiene el símbolo '$'."
+        "src/components/BrandStory.tsx exporta BrandStory y se monta en src/app/page.tsx con id='nosotros'.",
+        "La sección incluye un <h2> con un título en español y un <p> que mencione explícitamente las palabras 'lana chilena' y 'poncho'.",
+        "El layout es de dos columnas en escritorio (texto + imagen) y colapsa a una columna por debajo del breakpoint md.",
+        "La imagen apunta a '/poncho-mujer.webp' (reemplaza el placeholder SVG actual) y el componente es un cliente component con motion para reveal/parallax; respeta prefers-reduced-motion.",
+        "Existe un sello SVG 'Hecho a mano' (public/seal.svg) referenciado en la sección, con rotación ligada al scroll.",
+        "Existe tests/components/BrandStory.test.tsx que verifica: sección id='nosotros' en '/', texto contiene 'lana chilena' y 'poncho', imagen apunta a '/poncho-mujer.webp', y el componente usa motion."
       ],
       "sdd": true,
       "status": "done"
     },
     {
       "id": 6,
-      "name": "product_detail_page",
-      "title": "Página de detalle de producto",
-      "description": "Ruta dinámica /productos/[slug] que muestra la ficha completa de un producto: imagen grande, nombre, descripción, precio y un CTA de contacto. Reutiliza los datos del array estático y maneja correctamente el caso de slug inexistente.",
+      "name": "product_grid",
+      "title": "Catálogo v2 — layout bento + hover magnético",
+      "description": "Catálogo con layout bento (producto destacado grande + resto en cuadrícula), imágenes en duotono cálido, etiquetas de material por producto, hover magnético (tilt que sigue el cursor), reveal staggered al entrar en viewport. Cada tarjeta sigue siendo un enlace a /productos/<slug> con imagen, nombre y precio CLP.",
       "acceptance": [
-        "Existe src/app/productos/[slug]/page.tsx que resuelve el producto desde src/lib/products.ts por params.slug y muestra su ficha.",
-        "Si el slug no existe en products, la página renderiza un <h1> 'Producto no encontrado' en español y un enlace de vuelta a '#catalogo' (no un error 500).",
-        "La ficha válida incluye un <img> con src='/product_placeholder_2.svg', un <h1> con el nombre del producto, un <p> con la descripción, el precio formateado en CLP y un <a> con texto 'Consultar por WhatsApp' apuntando a https://wa.me/?text=<mensaje con el slug> (placeholder del número, el href puede ser un literal).",
-        "Existe tests/app/product-detail.test.tsx con al menos dos tests: uno que verifica la renderización correcta para un slug válido y otro que verifica el estado 'Producto no encontrado' para un slug inválido."
+        "src/lib/products.ts exporta el array products con al menos 6 elementos; cada producto puede tener un campo opcional material (string) describiendo el material. Los slugs, nombres y precios existentes se conservan.",
+        "src/components/ProductGrid.tsx se monta en src/app/page.tsx con id='catalogo'. Cada tarjeta es un enlace a /productos/<slug> con una imagen (src 'poncho-mujer.webp' o 'poncho-hombre.webp'), alt con el nombre, el nombre como <h3>, el precio formateado en CLP con '$', y una etiqueta de material visible.",
+        "La grid es responsive: 1 columna en móvil, 2 en sm, 3 en md+; el layout bento hace que al menos una tarjeta ocupe más espacio (col-span/row-span) que las demás.",
+        "El componente es un cliente component con motion para reveal staggered y hover magnético; respeta prefers-reduced-motion.",
+        "Existe tests/components/ProductGrid.test.tsx que verifica: grid renderiza al menos 6 tarjetas en /productos/<slug>, cada tarjeta con imagen, h3 con nombre, precio con '$', etiqueta de material; grid responsive (grid-cols-1 sm:grid-cols-2 md:grid-cols-3); y el componente usa motion."
       ],
       "sdd": true,
       "status": "done"
@@ -89,14 +95,30 @@
     {
       "id": 7,
       "name": "footer",
-      "title": "Pie de página del sitio",
-      "description": "Pie de página con la marca, datos de contacto, iconos de redes sociales y copyright con año dinámico. Cierra la identidad visual del sitio y centraliza la información de contacto.",
+      "title": "Pie v2 — wordmark reveal + pills magnéticas",
+      "description": "Footer obscuro con wordmark gigante 'MANTAMAR' reveal con máscara-wipe al entrar en viewport, pills sociales con hover magnético. Mantiene marca, contacto, 3 redes (Instagram, Facebook, WhatsApp) y copyright con año dinámico.",
       "acceptance": [
-        "Existe src/components/Footer.tsx que exporta Footer y se monta en src/app/layout.tsx (no en cada página).",
-        "El footer muestra la marca 'Mantamar', un bloque de contacto con email y teléfono de placeholder, y enlaces a tres redes sociales (Instagram, Facebook y WhatsApp) con href='#' por ahora.",
-        "El footer tiene fondo bg-ink text-paper y padding py-12 px-6 como mínimo.",
-        "El texto de copyright contiene el año actual calculado dinámicamente dentro del componente (no hardcodeado).",
-        "Existe tests/components/Footer.test.tsx que verifica que el footer aparece en '/', que contiene el texto 'Mantamar', que el copyright contiene el año actual y que los tres enlaces a redes (Instagram, Facebook y WhatsApp) están presentes."
+        "src/components/Footer.tsx exporta Footer y se monta en src/app/layout.tsx.",
+        "El footer muestra la marca 'Mantamar', un bloque de contacto con email y teléfono placeholder, y enlaces a tres redes sociales (Instagram, Facebook, WhatsApp) con href='#'.",
+        "El footer tiene fondo obscuro (bg-ink o bg-espresso) y texto claro (text-paper o text-sand), padding py-12 px-6 mínimo.",
+        "El texto de copyright contiene el año actual calculado dinámicamente con new Date().getFullYear().",
+        "El componente es un cliente component con motion para el reveal del wordmark gigante y hover magnético en las pills sociales; respeta prefers-reduced-motion.",
+        "Existe tests/components/Footer.test.tsx que verifica: footer aparece en '/', contiene 'Mantamar', copyright con año actual, tres enlaces a redes (Instagram, Facebook, WhatsApp), y el componente usa motion."
+      ],
+      "sdd": true,
+      "status": "done"
+    },
+    {
+      "id": 8,
+      "name": "product_detail_page",
+      "title": "Página de detalle v2 — parallax + duotono",
+      "description": "Ruta /productos/[slug] con imagen grande en parallax + duotono cálido que cede en hover, precio/metadata slide-in, back-link con flecha animada. Migración del <img> placeholder SVG a next/image con foto real. Mantiene el estado 'Producto no encontrado' para slug inválido.",
+      "acceptance": [
+        "src/app/productos/[slug]/page.tsx resuelve el producto desde src/lib/products.ts por params.slug (await, firma Next 16) y muestra su ficha.",
+        "Si el slug no existe, la página renderiza un <h1> 'Producto no encontrado' en español y un enlace de vuelta a '#catalogo' (no error 500).",
+        "La ficha válida incluye una imagen (next/image) con alt del nombre, un <h1> con el nombre, un <p> con la descripción, el precio formateado en CLP y un <a> con texto 'Consultar por WhatsApp' apuntando a https://wa.me/?text=<mensaje con el slug>.",
+        "El componente ProductDetailPage es un cliente component (o envuelve la ficha en uno) con motion para parallax/duotono/slide-in; respeta prefers-reduced-motion.",
+        "Existe tests/app/product-detail.test.tsx con al menos dos tests: uno que verifica la renderización correcta para un slug válido (nombre, precio con '$', enlace WhatsApp) y otro que verifica el estado 'Producto no encontrado' para un slug inválido con enlace a '#catalogo'."
       ],
       "sdd": true,
       "status": "done"

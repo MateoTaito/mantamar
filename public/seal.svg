@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <path id="seal-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" fill="none"/>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="none" stroke="#B07A4A" stroke-width="1" stroke-dasharray="2 3"/>
+  <circle cx="60" cy="60" r="44" fill="none" stroke="#B07A4A" stroke-width="0.5"/>
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="9" fill="#D9C7A8" letter-spacing="2">
+    <textPath href="#seal-circle" startOffset="0">HECHO A MANO · SUR DE CHILE · </textPath>
+  </text>
+  <text x="60" y="56" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#B07A4A">M</text>
+  <text x="60" y="72" text-anchor="middle" font-family="Georgia, serif" font-size="8" fill="#D9C7A8" letter-spacing="2">EST. MMXXVI</text>
+</svg>

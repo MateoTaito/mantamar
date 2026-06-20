@@ -23,15 +23,47 @@ describe('header_navigation', () => {
     }
   });
 
-  test('header has bg-cream, backdrop-blur and border-b classes', () => {
+  test('header is sticky with charcoal backdrop and backdrop-blur', () => {
     const { container } = render(<Header />);
     const header = container.querySelector('header');
     expect(header).not.toBeNull();
     const className = header?.className ?? '';
-    expect(className).toMatch(/bg-cream/);
+    expect(className).toMatch(/sticky/);
+    expect(className).toMatch(/top-0/);
+    expect(className).toMatch(/bg-charcoal/);
     expect(className).toMatch(/backdrop-blur/);
-    expect(className).toMatch(/border-b/);
-    expect(className).toMatch(/border-coffee-dark/);
+  });
+
+  test('header is a client component using motion with useScroll', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'Header.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/['"]use client['"]/);
+    expect(src).toMatch(/from\s+['"]motion\/react['"]/);
+    expect(src).toMatch(/useScroll|useMotionValueEvent/);
+    expect(src).toMatch(/useReducedMotion/);
+  });
+
+  test('wordmark uses font-serif (Fraunces)', () => {
+    render(<Header />);
+    const brand = screen.getByRole('link', { name: /mantamar/i });
+    expect(brand.className).toMatch(/font-serif/);
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'Header.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/font-serif/);
+  });
+
+  test('nav links have animated copper underline via span', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'Header.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/bg-copper/);
+    expect(src).toMatch(/scale-x-0/);
+    expect(src).toMatch(/group-hover:scale-x-100/);
   });
 
   test('layout mounts Header (and page.tsx does not)', () => {

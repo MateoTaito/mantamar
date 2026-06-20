@@ -11,7 +11,7 @@ describe('product_grid', () => {
     expect(container.querySelector('section#catalogo')).not.toBeNull();
   });
 
-  test('the products array has at least 6 valid entries', () => {
+  test('the products array has at least 6 valid entries with optional material field', () => {
     expect(products.length).toBeGreaterThanOrEqual(6);
     for (const p of products) {
       expect(typeof p.slug).toBe('string');
@@ -27,6 +27,24 @@ describe('product_grid', () => {
     expect(slugs.size).toBe(products.length);
   });
 
+  test('Product interface declares optional material field and slugs are conserved', () => {
+    const lib = readFileSync(
+      join(process.cwd(), 'src', 'lib', 'products.ts'),
+      'utf8'
+    );
+    expect(lib).toMatch(/readonly\s+material\?\s*:\s*string/);
+    for (const slug of [
+      'poncho-andino',
+      'poncho-mapuche',
+      'chal-lana',
+      'bufanda-larga',
+      'gorro-piloto',
+      'mitones-lana',
+    ]) {
+      expect(lib).toContain(slug);
+    }
+  });
+
   test('the grid renders at least 6 cards, each linking to /productos/<slug>', () => {
     render(<ProductGrid />);
     const links = screen.getAllByRole('link');
@@ -40,7 +58,7 @@ describe('product_grid', () => {
     }
   });
 
-  test('each card has image, h3 with name, and price with $ symbol', () => {
+  test('each card has image, h3 with name, price with $ and material tag', () => {
     const { container } = render(<ProductGrid />);
     const cards = container.querySelectorAll('a[href^="/productos/"]');
     expect(cards.length).toBeGreaterThanOrEqual(6);
@@ -59,6 +77,15 @@ describe('product_grid', () => {
     }
   });
 
+  test('each card shows a material tag span', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'ProductGrid.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/product-tag/);
+    expect(src).toMatch(/material|Lana chilena/);
+  });
+
   test('grid container is responsive (grid-cols-1 sm:grid-cols-2 md:grid-cols-3)', () => {
     const { container } = render(<ProductGrid />);
     const section = container.querySelector('section#catalogo');
@@ -69,6 +96,55 @@ describe('product_grid', () => {
     expect(className).toMatch(/grid-cols-1/);
     expect(className).toMatch(/sm:grid-cols-2/);
     expect(className).toMatch(/md:grid-cols-3/);
+  });
+
+  test('bento layout: first card (poncho-andino) is featured with md:col-span-2', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'ProductGrid.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/md:col-span-2|col-span-2|row-span-2/);
+    expect(src).toMatch(/featured/);
+  });
+
+  test('component is a client component with motion, staggered reveal and magnetic hover', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'ProductGrid.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/['"]use client['"]/);
+    expect(src).toMatch(/from\s+['"]motion\/react['"]/);
+    expect(src).toMatch(/staggerChildren/);
+    expect(src).toMatch(/onMouseMove/);
+    expect(src).toMatch(/rotateX|rotateY/);
+    expect(src).toMatch(/useReducedMotion/);
+  });
+
+  test('duotone filter exists in globals.css and is applied on card images', () => {
+    const css = readFileSync(
+      join(process.cwd(), 'src', 'app', 'globals.css'),
+      'utf8'
+    );
+    expect(css).toMatch(/\.duotone\b/);
+    expect(css).toMatch(/sepia|saturate|contrast/);
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'ProductGrid.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/duotone/);
+  });
+
+  test('focus-visible and hover:none (touch) support declared', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'ProductGrid.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/focus-visible/);
+    const css = readFileSync(
+      join(process.cwd(), 'src', 'app', 'globals.css'),
+      'utf8'
+    );
+    expect(css).toMatch(/@media\s*\(hover:\s*none\)/);
   });
 
   test('src/lib/products.ts exists and exports the products array', () => {

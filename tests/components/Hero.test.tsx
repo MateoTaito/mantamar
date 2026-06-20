@@ -46,6 +46,27 @@ describe('hero_section', () => {
     expect(className).toMatch(/min-h-\[80vh\]|min-h-screen|min-h-\[/);
   });
 
+  test('Hero is a client component using motion for reveal, stagger and parallax', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'Hero.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/['"]use client['"]/);
+    expect(src).toMatch(/from\s+['"]motion\/react['"]/);
+    expect(src).toMatch(/useScroll/);
+    expect(src).toMatch(/useTransform/);
+    expect(src).toMatch(/useReducedMotion/);
+  });
+
+  test('h1 is animated word-by-word with stagger (each word in inline-block span)', () => {
+    const src = readFileSync(
+      join(process.cwd(), 'src', 'components', 'Hero.tsx'),
+      'utf8'
+    );
+    expect(src).toMatch(/inline-block/);
+    expect(src).toMatch(/staggerChildren|delay:\s*[^}]*\+\s*i\s*\*\s*0\.0\d|i\s*\*\s*0\.0\d/);
+  });
+
   test('page.tsx mounts the Hero component', () => {
     const pagePath = join(process.cwd(), 'src', 'app', 'page.tsx');
     const page = readFileSync(pagePath, 'utf8');
